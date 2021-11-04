@@ -5,6 +5,13 @@
   "repository": "git@github.com:YDoro/projeto_liven.git",
   "author": "Yan Mello <y.doro@vertexdigital.co>",
   "license": "MIT",
+  "scripts": {
+    "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
+    "test:unit": "yarn test --watch -c jest-unit-config.js",
+    "test:integration": "yarn test  --watch -c jest-integration-config.js",
+    "test:staged": "yarn test --findRelatedTests",
+    "test:ci": "yarn test --coverage"
+  },
   "dependencies": {
     "bcrypt": "^5.0.1",
     "express": "^4.17.1",
