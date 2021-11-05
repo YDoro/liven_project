@@ -1,4 +1,4 @@
-import { InvalidParamError } from '../../presentation/errors/http/invalid-param-error'
+import { InvalidParamError } from '../../presentation/errors/invalid-param-error'
 import { EmailValidation } from './email-validation'
 
 interface SutTypes{

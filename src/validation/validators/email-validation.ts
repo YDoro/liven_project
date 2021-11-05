@@ -1,5 +1,5 @@
 import { Validation } from "../../presentation/controllers/protocols/validation";
-import { InvalidParamError } from "../../presentation/errors/http/invalid-param-error";
+import { InvalidParamError } from "../../presentation/errors/invalid-param-error";
 
 export class EmailValidation implements Validation {
     constructor (private readonly fieldName: string) { }
