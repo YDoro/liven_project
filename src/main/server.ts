@@ -1,4 +1,9 @@
 import express from 'express'
-const app = express()
+import {MongoHelper} from'../infra/db/mongodb/helpers/mongo-helper'
+import env from './config/env'
 
-app.listen(3000, () => console.log('server running on http://localhost:3000'))
+MongoHelper.connect(env.mongoUrl)
+  .then(async () => {
+    const app = express()
+    app.listen(env.port, () => console.log(`Server running on port http://localhost:${env.port}`))
+  }).catch(console.error)
