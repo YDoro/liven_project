@@ -15,9 +15,9 @@ describe('Login Routes', () => {
     accountCollection = await MongoHelper.getCollection('accounts')
     await accountCollection.deleteMany({})
   })
-  describe('POST /signup', () => {
-    test('Should return status 201 on signup', async () => {
-      await request(app).post('/api/signup')
+  describe('POST /user', () => {
+    test('Should return status 201 on user', async () => {
+      await request(app).post('/api/user')
         .send({
           name: 'yan',
           password: 'some_password',
