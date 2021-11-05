@@ -3,3 +3,5 @@ yarn.log
 globalConfig.json
 coverage
 dist
+data
+!src/data
