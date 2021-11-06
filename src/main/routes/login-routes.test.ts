@@ -2,6 +2,8 @@ import request from 'supertest'
 import app from '../config/app'
 import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
+import { hash } from 'bcrypt'
+
 
 let accountCollection: Collection
 describe('Login Routes', () => {
@@ -25,6 +27,31 @@ describe('Login Routes', () => {
           email: 'some_email@mail.com'
         })
         .expect(201)
+    })
+  })
+  describe('POST user/login', () => {
+    test('Should return status 200 on login', async () => {
+      const password = await hash('some_password', 12)
+      await accountCollection.insertOne({
+        name: 'yan',
+        password,
+        passwordConfirm: 'some_password',
+        email: 'some_email@mail.com'
+      })
+      await request(app).post('/api/user/login')
+        .send({
+          email: 'some_email@mail.com',
+          password: 'some_password'
+        })
+        .expect(200)
+    })
+    test('Should return status 401  on login', async () => {
+      await request(app).post('/api/user/login')
+        .send({
+          email: 'some_email@mail.com',
+          password: 'wrong_password'
+        })
+        .expect(401)
     })
   })
 })
