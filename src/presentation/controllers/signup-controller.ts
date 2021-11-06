@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-constructor */
 import { AddAccount } from '../../domain/usecases/add-account'
-import { badRequest, created, serverError } from '../helpers/http/http-helper'
+import { Authentication } from '../../domain/usecases/authentication'
+import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
+import { badRequest, created, forbidden, serverError } from '../helpers/http/http-helper'
 import { Controller } from './protocols/controller'
 import { HttpRequest, HttpResponse } from './protocols/http'
 import { Validation } from './protocols/validation'
@@ -8,7 +10,8 @@ import { Validation } from './protocols/validation'
 export class SignUpController implements Controller {
   constructor (
         private readonly addAccount: AddAccount,
-        private readonly validation: Validation
+        private readonly validation: Validation,
+        private readonly authentication: Authentication
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -27,7 +30,12 @@ export class SignUpController implements Controller {
         password
       })
 
-      return created(account)
+
+     if (!account) return forbidden(new EmailAlreadyInUseError())
+
+      const accessToken = await this.authentication.auth({ email, password })
+      return created({accessToken})
+      
     } catch (error) {
       return serverError(error)
     }
