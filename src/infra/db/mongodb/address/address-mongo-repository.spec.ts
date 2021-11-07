@@ -51,6 +51,13 @@ describe('address mongo repository', () => {
     expect(account).toEqual({ ...makeFakeAccount(), id: id.toString(), addresses: [makeFakeAddress()] })
   })
 
+  test('should return undefined on list if account.addresses is undefined', async () => {
+    const id = (await accountCollection.insertOne(makeFakeAccount())).insertedId.toString()
+    const sut = makeSut()
+    const addresses = await sut.list(id)
+    expect(addresses).toBeUndefined()
+  })
+
   test('should return an account on list success', async () => {
     const id = (await accountCollection.insertOne(makeFakeAccount())).insertedId.toString()
     const sut = makeSut()
