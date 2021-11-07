@@ -63,6 +63,8 @@ describe('add address controller', () => {
     const { sut } = makeSUT()
     const response = await sut.handle(makeFakeRequest())
     expect(response.statusCode).toBe(201)
+    expect(response.body.addresses).toBeInstanceOf(Array)
+    expect(response.body.addresses[0]).toBeDefined()
   })
   test('should call addAddressAdd with the right values', async () => {
     const { sut, addAddressStub } = makeSUT()
@@ -75,5 +77,12 @@ describe('add address controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const response = await sut.handle(makeFakeRequest())
     expect(response.statusCode).toBe(400)
+  })
+
+  test('should return 500 on addAddress throws', async () => {
+    const { sut, addAddressStub } = makeSUT()
+    jest.spyOn(addAddressStub, 'add').mockRejectedValueOnce(new Error('any_error'))
+    const response = await sut.handle(makeFakeRequest())
+    expect(response.statusCode).toBe(500)
   })
 })
