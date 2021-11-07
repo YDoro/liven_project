@@ -42,14 +42,14 @@ describe("auth middleware", () => {
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
   });
 
-  test("should return 403 if loadAccountByToken returns null is provided", async () => {
+  test("should return 403 if loadAccountByToken returns null", async () => {
     const { sut, loadAccountByTokenStub } = makeSUT();
     jest.spyOn(loadAccountByTokenStub,'load').mockResolvedValueOnce(null)
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
   });
-  
-  test("should return 200 if loadAccountByToken returns account is provided", async () => {
+
+  test("should return 200 if loadAccountByToken returns account", async () => {
     const { sut, loadAccountByTokenStub } = makeSUT();
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse.statusCode).toBe(200);
