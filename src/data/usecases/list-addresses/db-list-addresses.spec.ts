@@ -40,4 +40,11 @@ describe('db list addresses', () => {
     await sut.list('any_account_id')
     expect(listSpy).toHaveBeenCalledWith('any_account_id')
   })
+  test('should return an array on success', async () => {
+    const { sut } = makeSUT()
+    const addresses = await sut.list('any_account_id')
+    expect(addresses).toBeInstanceOf(Array)
+    expect(addresses[0]).toBeDefined()
+    expect(addresses[0].name).toEqual('any_name')
+  })
 })
