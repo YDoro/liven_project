@@ -64,6 +64,12 @@ describe('add address controller', () => {
     const response = await sut.handle(makeFakeRequest())
     expect(response.statusCode).toBe(200)
   })
+  test('should call addAddressAdd with the right values', async () => {
+    const { sut, addAddressStub } = makeSUT()
+    const addSpy = jest.spyOn(addAddressStub, 'add')
+    await sut.handle(makeFakeRequest())
+    expect(addSpy).toHaveBeenCalledWith(makeFakeAddress(), 'valid_id')
+  })
   test('should return 400 on validation error', async () => {
     const { sut, validationStub } = makeSUT()
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
