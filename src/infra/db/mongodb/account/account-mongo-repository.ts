@@ -8,27 +8,27 @@ import { MongoHelper } from '../helpers/mongo-helper'
 
 export class AccountMongoRepository implements AddAccountRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository, LoadAccountByTokenRepository {
   async loadByToken (token: string): Promise<AccountModel> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
     const account = await accountCollection.findOne({ accessToken: token })
     return account && MongoHelper.map(account)
   }
 
-  private accountCollection = 'accounts'
+  public static readonly accountCollection = 'accounts'
 
   async add (accountData: AddAccountModel): Promise<AccountModel> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
     const result = await accountCollection.findOne({ _id: (await accountCollection.insertOne(accountData)).insertedId })
     return MongoHelper.map(result)
   }
 
   async loadByEmail (email: string): Promise<AccountModel> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
     const account = await accountCollection.findOne({ email })
     return account && MongoHelper.map(account)
   }
 
   async updateAccessToken (id: string, token: string): Promise<void> {
-    const accountCollection = await MongoHelper.getCollection(this.accountCollection)
+    const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
     await accountCollection.updateOne(
       { _id: id }, {
         $set: { accessToken: token }
