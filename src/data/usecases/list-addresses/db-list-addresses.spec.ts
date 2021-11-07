@@ -40,6 +40,12 @@ describe('db list addresses', () => {
     await sut.list('any_account_id')
     expect(listSpy).toHaveBeenCalledWith('any_account_id')
   })
+  test('should throw if ListAddressesRepository throws', async () => {
+    const { sut, listAddressesRepositoryStub } = makeSUT()
+    jest.spyOn(listAddressesRepositoryStub, 'list').mockRejectedValueOnce(new Error('any_error'))
+    const promise = sut.list('any_account_id')
+    expect(promise).rejects.toThrowError('any_error')
+  })
   test('should return an array on success', async () => {
     const { sut } = makeSUT()
     const addresses = await sut.list('any_account_id')
