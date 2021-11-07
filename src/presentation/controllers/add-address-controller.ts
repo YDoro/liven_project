@@ -1,5 +1,5 @@
 import { AddAddress } from '../../domain/usecases/add-address'
-import { badRequest } from '../helpers/http/http-helper'
+import { badRequest, created, serverError } from '../helpers/http/http-helper'
 import { Controller } from './protocols/controller'
 import { HttpRequest, HttpResponse } from './protocols/http'
 import { Validation } from './protocols/validation'
@@ -11,23 +11,27 @@ export class AddAddressController implements Controller {
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
-    const error = this.validation.validate(httpRequest.body)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(httpRequest.body)
+      if (error) {
+        return badRequest(error)
+      }
+      const { name, postalcode, street, number, complement, landmark, neigborhood, city, state, country, accountId } = httpRequest.body
+      const account = await this.addAddress.add({
+        name,
+        postalcode,
+        street,
+        number,
+        complement,
+        landmark,
+        neigborhood,
+        city,
+        state,
+        country
+      }, accountId)
+      return created(account)
+    } catch (e) {
+      return serverError(e)
     }
-    const { name, postalcode, street, number, complement, landmark, neigborhood, city, state, country, accountId } = httpRequest.body
-    this.addAddress.add({
-      name,
-      postalcode,
-      street,
-      number,
-      complement,
-      landmark,
-      neigborhood,
-      city,
-      state,
-      country
-    }, accountId)
-    return new Promise(resolve => resolve({ statusCode: 201, body: {} }))
   }
 }
