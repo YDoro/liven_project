@@ -1,5 +1,4 @@
 import { Collection } from 'mongodb'
-import { AccountModel } from '../../../../domain/models/account'
 import { AddressModel } from '../../../../domain/models/address'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AddressMongoRepository } from './address-mongo-repository'
@@ -23,6 +22,12 @@ const makeFakeAddress = ():AddressModel => ({
   postalcode: '12345678'
 })
 
+const makeFakeAccount = () => ({
+  name: 'valid_name',
+  email: 'valid_email@mail.com',
+  password: 'hashed_password'
+})
+
 describe('address mongo repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL)
@@ -36,7 +41,13 @@ describe('address mongo repository', () => {
   })
   test('should throw on account not found', async () => {
     const sut = makeSut()
-    const promise = sut.add(makeFakeAddress(), 'any_id')
-    expect(promise).rejects.toThrowError('failed on update user address: any_id')
+    const promise = sut.add(makeFakeAddress(), '618822b3994c80366c7c2856')
+    expect(promise).rejects.toThrowError('failed on update user address: 618822b3994c80366c7c2856')
+  })
+  test('should return an account on success', async () => {
+    const id = (await accountCollection.insertOne(makeFakeAccount())).insertedId.toString()
+    const sut = makeSut()
+    const account = await sut.add(makeFakeAddress(), id)
+    expect(account).toEqual({ ...makeFakeAccount(), id: id.toString(), addresses: [makeFakeAddress()] })
   })
 })
