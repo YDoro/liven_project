@@ -44,4 +44,10 @@ describe('unique address name validation ', () => {
     const error = await sut.validate({ name: 'any_name' })
     expect(error).toBeUndefined()
   })
+  test('should return nothing if other addresses returned', async () => {
+    const { sut, listAddressesRepositoryStub } = makeSUT()
+    jest.spyOn(listAddressesRepositoryStub, 'list').mockResolvedValueOnce([{ ...makeFakeAddress(), name: 'other_name' }])
+    const error = await sut.validate({ name: 'any_name' })
+    expect(error).toBeUndefined()
+  })
 })
