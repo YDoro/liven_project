@@ -15,6 +15,19 @@ export class AddAddressController implements Controller {
     if (error) {
       return badRequest(error)
     }
+    const { name, postalcode, street, number, complement, landmark, neigborhood, city, state, country, accountId } = httpRequest.body
+    this.addAddress.add({
+      name,
+      postalcode,
+      street,
+      number,
+      complement,
+      landmark,
+      neigborhood,
+      city,
+      state,
+      country
+    }, accountId)
     return new Promise(resolve => resolve({ statusCode: 200, body: {} }))
   }
 }
