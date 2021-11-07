@@ -54,4 +54,10 @@ describe('db add address', () => {
     const promise = sut.add(makeFakeAddress(), 'any_id')
     expect(promise).rejects.toThrowError()
   })
+
+  test('should return an account on success', async () => {
+    const { sut } = makeSUT()
+    const account = await sut.add(makeFakeAddress(), 'any_id')
+    expect(account.addresses).toBeInstanceOf(Array)
+  })
 })
