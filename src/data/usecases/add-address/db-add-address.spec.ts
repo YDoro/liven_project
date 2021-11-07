@@ -47,4 +47,11 @@ describe('db add address', () => {
     sut.add(makeFakeAddress(), 'any_id')
     expect(addSpy).toHaveBeenCalledWith(makeFakeAddress(), 'any_id')
   })
+
+  test('should throw if addAddressRepository throws', async () => {
+    const { addAddressRepositoryStub, sut } = makeSUT()
+    jest.spyOn(addAddressRepositoryStub, 'add').mockRejectedValueOnce(new Error())
+    const promise = sut.add(makeFakeAddress(), 'any_id')
+    expect(promise).rejects.toThrowError()
+  })
 })
