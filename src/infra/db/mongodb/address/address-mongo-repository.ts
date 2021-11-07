@@ -1,4 +1,4 @@
-import { MongoTransactionError, PushOperator } from 'mongodb'
+import { MongoTransactionError, PushOperator, ObjectId } from 'mongodb'
 import { AddAddressRepository } from '../../../../data/protocols/db/address/add-address-repository'
 import { AccountModel } from '../../../../domain/models/account'
 import { AddressModel } from '../../../../domain/models/address'
@@ -9,7 +9,7 @@ export class AddressMongoRepository implements AddAddressRepository {
   async add (address: AddressModel, userId: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
     const result = await accountCollection.findOneAndUpdate(
-      { _id: userId },
+      { _id: new ObjectId(userId) },
       { $push: { addresses: address } as PushOperator<AccountModel|Document> },
       { returnDocument: 'after' }
     )
@@ -18,6 +18,6 @@ export class AddressMongoRepository implements AddAddressRepository {
       throw new MongoTransactionError(`failed on update user address: ${userId}`)
     }
 
-    return MongoHelper.map(result)
+    return MongoHelper.map(result.value)
   }
 }
