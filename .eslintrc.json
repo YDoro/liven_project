@@ -15,10 +15,9 @@
     },
     "plugins": [
         "@typescript-eslint",
-        "jest",
+        "jest"
     ],
     "rules": {
-        "no-useless-constructor":"off",
-        
+        "no-useless-constructor":"off"
     }
 }
