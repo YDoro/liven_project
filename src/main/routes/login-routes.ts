@@ -5,5 +5,5 @@ import { makeSignUpController } from '../factories/controllers/signup/signup-con
 
 export default (router: Router): void => {
   router.post('/user', adaptRoute(makeSignUpController()))
-  router.post('/user/login',adaptRoute(makeLoginController()))
+  router.post('/user/login', adaptRoute(makeLoginController()))
 }

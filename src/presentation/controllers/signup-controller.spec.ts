@@ -60,34 +60,34 @@ const makeSut = ():SutTypes => {
   const validationStub = makeValidation()
   const addAccountStub = makeAddAccount()
   const authenticatioStub = makeAuthentication()
-  const sut = new SignUpController(addAccountStub, validationStub,authenticatioStub)
-  return { addAccountStub, sut, validationStub ,authenticatioStub}
+  const sut = new SignUpController(addAccountStub, validationStub, authenticatioStub)
+  return { addAccountStub, sut, validationStub, authenticatioStub }
 }
 
 describe('signup controller', () => {
   test('should call addAccount with correct values', async () => {
     const { sut, addAccountStub } = makeSut()
-     const addSypy = jest.spyOn(addAccountStub, 'add')
+    const addSypy = jest.spyOn(addAccountStub, 'add')
 
-     await sut.handle(makeFakeRequest())
-     expect(addSypy).toHaveBeenCalledWith({
-      name:makeFakeRequest().body.name,
-      email:makeFakeRequest().body.email,
-      password:makeFakeRequest().body.password,
-     })
+    await sut.handle(makeFakeRequest())
+    expect(addSypy).toHaveBeenCalledWith({
+      name: makeFakeRequest().body.name,
+      email: makeFakeRequest().body.email,
+      password: makeFakeRequest().body.password
+    })
   })
 
   test('should return 201 on success', async () => {
     const { sut } = makeSut()
-     const response = await sut.handle(makeFakeRequest())
-     expect(response.statusCode).toBe(201)
+    const response = await sut.handle(makeFakeRequest())
+    expect(response.statusCode).toBe(201)
   })
 
   test('should return 400 on validation fails', async () => {
     const { sut, validationStub } = makeSut()
-    jest.spyOn(validationStub,'validate').mockReturnValueOnce(new Error('invalid field: name'))
-     const response = await sut.handle(makeFakeRequest())
-     expect(response.statusCode).toBe(400)
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error('invalid field: name'))
+    const response = await sut.handle(makeFakeRequest())
+    expect(response.statusCode).toBe(400)
   })
 
   test('should return 403 if add account returns null', async () => {
@@ -96,19 +96,19 @@ describe('signup controller', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(forbidden(new EmailAlreadyInUseError()))
   })
-  
+
   test('should return 500 if addAccount throws', async () => {
     const { sut, addAccountStub } = makeSut()
-     jest.spyOn(addAccountStub, 'add').mockRejectedValueOnce(new Error('any error'))
-     const response = await sut.handle(makeFakeRequest())
-     expect(response.statusCode).toBe(500)
+    jest.spyOn(addAccountStub, 'add').mockRejectedValueOnce(new Error('any error'))
+    const response = await sut.handle(makeFakeRequest())
+    expect(response.statusCode).toBe(500)
   })
 
   test('should return 500 if validation throws', async () => {
     const { sut, validationStub } = makeSut()
-     jest.spyOn(validationStub, 'validate').mockImplementationOnce(()=>{throw new Error('any error')})
-     const response = await sut.handle(makeFakeRequest())
-     expect(response.statusCode).toBe(500)
+    jest.spyOn(validationStub, 'validate').mockImplementationOnce(() => { throw new Error('any error') })
+    const response = await sut.handle(makeFakeRequest())
+    expect(response.statusCode).toBe(500)
   })
 
   test('Should call Authentication with correct values', async () => {
@@ -124,5 +124,4 @@ describe('signup controller', () => {
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
-
 })

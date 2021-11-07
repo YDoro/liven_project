@@ -5,7 +5,6 @@ interface SutTypes{
   sut: EmailValidation
 }
 
-
 const makeSut = (): SutTypes => {
   const sut = new EmailValidation('email')
   return {
@@ -15,13 +14,13 @@ const makeSut = (): SutTypes => {
 
 describe('email validation', () => {
   test('should return an error if email is invalid', () => {
-    const { sut} = makeSut()
+    const { sut } = makeSut()
     const error = sut.validate({ email: 'invalid_emailmail.com' })
     expect(error).toEqual(new InvalidParamError('email'))
   })
-  
+
   test('should return null if email is valid', () => {
-    const { sut} = makeSut()
+    const { sut } = makeSut()
     const error = sut.validate({ email: 'valid_email@mail.com' })
     expect(error).toBeNull()
   })

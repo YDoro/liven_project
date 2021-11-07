@@ -9,9 +9,9 @@ export const adaptRoute = (controller: Controller) => {
     }
     const httpResponse = await controller.handle(httpRequest)
     httpResponse.body.message
-      ? res.status(httpResponse.statusCode).json({ 
+      ? res.status(httpResponse.statusCode).json({
         error: httpResponse.body.message
-       })
+      })
       : res.status(httpResponse.statusCode).json(httpResponse.body)
   }
 }

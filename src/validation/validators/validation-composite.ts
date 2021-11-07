@@ -1,4 +1,4 @@
-import { Validation } from "../../presentation/controllers/protocols/validation"
+import { Validation } from '../../presentation/controllers/protocols/validation'
 /**
  * this class is a composite of validators
  * is a validator that receive an array of validators and then performs each validation

@@ -4,7 +4,6 @@ import { MongoHelper } from '../../infra/db/mongodb/helpers/mongo-helper'
 import { Collection } from 'mongodb'
 import { hash } from 'bcrypt'
 
-
 let accountCollection: Collection
 describe('Login Routes', () => {
   beforeAll(async () => {
