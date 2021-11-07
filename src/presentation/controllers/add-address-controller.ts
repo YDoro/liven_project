@@ -28,6 +28,6 @@ export class AddAddressController implements Controller {
       state,
       country
     }, accountId)
-    return new Promise(resolve => resolve({ statusCode: 200, body: {} }))
+    return new Promise(resolve => resolve({ statusCode: 201, body: {} }))
   }
 }

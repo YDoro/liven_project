@@ -59,10 +59,10 @@ const makeFakeRequest = ():HttpRequest => ({
   }
 })
 describe('add address controller', () => {
-  test('should return 200 on success', async () => {
+  test('should return 201 on success', async () => {
     const { sut } = makeSUT()
     const response = await sut.handle(makeFakeRequest())
-    expect(response.statusCode).toBe(200)
+    expect(response.statusCode).toBe(201)
   })
   test('should call addAddressAdd with the right values', async () => {
     const { sut, addAddressStub } = makeSUT()
