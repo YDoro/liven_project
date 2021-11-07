@@ -9,5 +9,4 @@ export interface AddressModel {
     city: string,
     state: string,
     country: string,
-    main: boolean,
 }

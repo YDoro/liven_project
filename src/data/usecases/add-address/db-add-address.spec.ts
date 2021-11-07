@@ -16,8 +16,7 @@ const makeFakeAddress = ():AddressModel => ({
   state: 'any_state',
   country: 'any_country',
   neigborhood: 'any_neighborhood',
-  postalcode: '12345678',
-  main: true
+  postalcode: '12345678'
 })
 const makeFakeAccount = ():AccountModel => ({
   id: 'valid_id',
