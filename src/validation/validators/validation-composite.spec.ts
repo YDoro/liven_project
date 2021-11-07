@@ -23,23 +23,27 @@ const makeSut = (): SutTypes => {
   }
 }
 describe('validation composite', () => {
-  test('should return an error if any validation fails', () => {
+  test('should return an error if any validation fails', async () => {
     const { sut, validationStubs } = makeSut()
-    jest.spyOn(validationStubs[0], 'validate').mockReturnValueOnce(new MissingParamError('field'))
-    const error = sut.validate({ field: 'any_value' })
+    jest.spyOn(validationStubs[0], 'validate').mockImplementationOnce(async () => {
+      return new Promise(resolve => resolve(new MissingParamError('field')))
+    })
+    const error = await sut.validate({ field: 'any_value' })
     expect(error).toEqual(new MissingParamError('field'))
   })
-  test('should return the first error if more than one validation fails', () => {
-    const { sut, validationStubs } = makeSut()
-    jest.spyOn(validationStubs[0], 'validate').mockReturnValueOnce(new Error())
-    jest.spyOn(validationStubs[1], 'validate').mockReturnValueOnce(new MissingParamError('field'))
 
-    const error = sut.validate({ field: 'any_value' })
+  test('should return the first error if more than one validation fails', async () => {
+    const { sut, validationStubs } = makeSut()
+    jest.spyOn(validationStubs[0], 'validate').mockResolvedValueOnce(new Error())
+    jest.spyOn(validationStubs[1], 'validate').mockResolvedValueOnce(new MissingParamError('field'))
+
+    const error = await sut.validate({ field: 'any_value' })
     expect(error).toEqual(new Error())
   })
-  test('should not return if validation succeeds', () => {
+
+  test('should not return if validation succeeds', async () => {
     const { sut } = makeSut()
-    const error = sut.validate({ field: 'any_value' })
+    const error = await sut.validate({ field: 'any_value' })
     expect(error).toBeFalsy()
   })
 })

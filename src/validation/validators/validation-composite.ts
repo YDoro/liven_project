@@ -6,10 +6,14 @@ import { Validation } from '../../presentation/controllers/protocols/validation'
 export class ValidationComposite implements Validation {
   constructor (private readonly validations: Validation[]) { }
 
-  validate (input: any): Error {
+  async validate (input: any): Promise<Error> {
     for (const validation of this.validations) {
       const error = validation.validate(input)
+
       if (error) {
+        if (error instanceof Promise) {
+          return await error
+        }
         return error
       }
     }
