@@ -9,7 +9,6 @@ export class DbUpdateAccount implements UpdateAccount {
   ) {}
 
   async update (address: UpdateAccountModel, accountId: string): Promise<boolean> {
-    await this.updateAccountRepository.update(address, accountId)
-    return new Promise(resolve => resolve(true))
+    return await this.updateAccountRepository.update(address, accountId)
   }
 }
