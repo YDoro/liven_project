@@ -16,7 +16,9 @@ export class AddAddressController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const { name, postalcode, street, number, complement, landmark, neigborhood, city, state, country, accountId } = httpRequest.body
+      const { name, postalcode, street, number, complement, landmark, neigborhood, city, state, country } = httpRequest.body
+      const accountId = httpRequest.body.middleware.accountId
+
       const account = await this.addAddress.add({
         name,
         postalcode,
