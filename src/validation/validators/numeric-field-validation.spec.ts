@@ -12,4 +12,9 @@ describe('numeric field validation', () => {
     const error = sut.validate({ cpf: '123456' })
     expect(error).toEqual(new InvalidParamError('cpf'))
   })
+  test('should return an invalid param error on undersized field given', () => {
+    const sut = new NumericFieldValidation('cpf', 1000, 7)
+    const error = sut.validate({ cpf: '123456' })
+    expect(error).toEqual(new InvalidParamError('cpf'))
+  })
 })
