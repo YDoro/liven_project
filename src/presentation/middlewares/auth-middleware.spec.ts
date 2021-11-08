@@ -19,9 +19,9 @@ const makeLoadAccountbyToken = (): LoadAccountByToken => {
   return new LoadAccountByTokenStub()
 }
 
-const makeSUT = (): SutTypes => {
+const makeSUT = (returnFullUser = false): SutTypes => {
   const loadAccountByTokenStub = makeLoadAccountbyToken()
-  const sut = new AuthMiddleware(loadAccountByTokenStub)
+  const sut = new AuthMiddleware(loadAccountByTokenStub, returnFullUser)
   return { sut, loadAccountByTokenStub }
 }
 const makeFakeAccount = (): AccountModel => ({
@@ -68,5 +68,13 @@ describe('auth middleware', () => {
     jest.spyOn(loadAccountByTokenStub, 'load').mockRejectedValueOnce(new Error('any_error'))
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(serverError(new Error('any_error')))
+  })
+
+  test('should return full user if returnFullUser is true', async () => {
+    const { sut } = makeSUT(true)
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body.user).toBeDefined()
+    expect(httpResponse.body.user).toEqual(makeFakeAccount())
   })
 })
