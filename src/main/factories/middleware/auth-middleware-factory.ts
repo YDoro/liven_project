@@ -2,6 +2,6 @@ import { Middleware } from '../../../presentation/controllers/protocols/middlewa
 import { AuthMiddleware } from '../../../presentation/middlewares/auth-middleware'
 import { makeDbLoadAccountByToken } from '../usecases/load-accounnt-by-token/db-load-account-by-token-factory'
 
-export const makeAuthMiddleware = ():Middleware => {
-  return new AuthMiddleware(makeDbLoadAccountByToken())
+export const makeAuthMiddleware = (returnFullUser = false):Middleware => {
+  return new AuthMiddleware(makeDbLoadAccountByToken(), returnFullUser)
 }
