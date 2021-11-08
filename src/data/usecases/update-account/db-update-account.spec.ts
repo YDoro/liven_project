@@ -79,6 +79,13 @@ describe('update account db usecase', () => {
     expect(hashSpy).toHaveBeenCalledWith('new_password')
     expect(updateSpy).toHaveBeenCalledWith({ password: 'hashed_password' }, 'any_id')
   })
+  test('should not call updateAccessTokenRepository with null values', async () => {
+    const { sut, updateAccountRepositoryStub } = makeSUT()
+    const updateSpy = jest.spyOn(updateAccountRepositoryStub, 'update')
+
+    await sut.update({ password: undefined }, 'any_id')
+    expect(updateSpy).toHaveBeenCalledWith({ }, 'any_id')
+  })
   test('should throw if hahser hash throws', async () => {
     const { sut, hasherStub } = makeSUT()
     jest.spyOn(hasherStub, 'hash').mockRejectedValueOnce(new Error('any_error'))
