@@ -5,8 +5,14 @@ import { Encrypter } from '../../data/protocols/criptography/encrypter'
 export class JwtAdapter implements Encrypter, Decrypter {
   constructor (private readonly secret: string) { }
   async decrypt (token: string): Promise<any> {
-    const value = await jwt.verify(token, this.secret)
-    return value
+    try {
+      const value = await jwt.verify(token, this.secret)
+      return value
+    } catch (e) {
+      // TODO - create logger
+      // just to avoid status 500 on jwt decode error in auth middleware
+      console.error(e)
+    }
   }
 
   async encrypt (value: string): Promise<string> {
