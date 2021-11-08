@@ -13,6 +13,9 @@ export class DbUpdateAccount implements UpdateAccount {
     if (password) {
       password = await this.hasher.hash(address.password)
     }
-    return await this.updateAccountRepository.update({ ...address, password }, accountId)
+    const fields = { ...address, password }
+    Object.keys(fields).forEach(key => (fields[key] === undefined || fields[key] === null) && delete fields[key])
+
+    return await this.updateAccountRepository.update(fields, accountId)
   }
 }
