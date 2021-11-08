@@ -9,6 +9,10 @@ export class DbUpdateAccount implements UpdateAccount {
   ) {}
 
   async update (address: UpdateAccountModel, accountId: string): Promise<boolean> {
-    return await this.updateAccountRepository.update(address, accountId)
+    let password = address.password
+    if (password) {
+      password = await this.hasher.hash(address.password)
+    }
+    return await this.updateAccountRepository.update({ ...address, password }, accountId)
   }
 }
