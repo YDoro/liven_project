@@ -40,4 +40,21 @@ describe('update account db usecase', () => {
     await sut.update({ password: 'new_password' }, 'any_id')
     expect(updateSpy).toHaveBeenCalledWith({ password: 'new_password' }, 'any_id')
   })
+  test('should return true if UpdateAccountRepository update returns true', async () => {
+    const { sut } = makeSUT()
+    const wasUpdated = await sut.update({ password: 'new_password' }, 'any_id')
+    expect(wasUpdated).toBe(true)
+  })
+  test('should return false if UpdateAccountRepository update returns false', async () => {
+    const { sut, updateAccountRepositoryStub } = makeSUT()
+    jest.spyOn(updateAccountRepositoryStub, 'update').mockResolvedValueOnce(false)
+    const wasUpdated = await sut.update({ password: 'new_password' }, 'any_id')
+    expect(wasUpdated).toBe(false)
+  })
+  test('should return throw if UpdateAccountRepository update throws', async () => {
+    const { sut, updateAccountRepositoryStub } = makeSUT()
+    jest.spyOn(updateAccountRepositoryStub, 'update').mockRejectedValueOnce(new Error('any_error'))
+    const promise = sut.update({ password: 'new_password' }, 'any_id')
+    expect(promise).rejects.toThrowError('any_error')
+  })
 })
