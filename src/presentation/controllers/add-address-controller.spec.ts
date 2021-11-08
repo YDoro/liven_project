@@ -55,7 +55,8 @@ const makeSUT = ():SutTypes => {
 
 const makeFakeRequest = ():HttpRequest => ({
   body: {
-    accountId: 'valid_id', ...makeFakeAddress()
+    middleware: { accountId: 'valid_id' },
+    ...makeFakeAddress()
   }
 })
 describe('add address controller', () => {
