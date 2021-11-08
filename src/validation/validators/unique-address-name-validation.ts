@@ -4,12 +4,12 @@ import { UniqueParamError } from '../../presentation/errors/unique-param-error'
 
 export class UniqueAddressNameValidation implements Validation {
   constructor (
-      private readonly accountId:string,
       private readonly listAddressesRepository: ListAddressesRepository
   ) { }
 
   async validate (input: any): Promise<Error> {
-    const addresses = await this.listAddressesRepository.list(this.accountId)
+    const accountId = input.middleware.accountId
+    const addresses = await this.listAddressesRepository.list(accountId)
     if (addresses) {
       const address = addresses.filter((address) => {
         return address.name === input.name
