@@ -17,4 +17,9 @@ describe('numeric field validation', () => {
     const error = sut.validate({ cpf: '123456' })
     expect(error).toEqual(new InvalidParamError('cpf'))
   })
+  test('should return undefined on valid field given', () => {
+    const sut = new NumericFieldValidation('cpf', 11, 11)
+    const error = sut.validate({ cpf: '12345678910' })
+    expect(error).toBeUndefined()
+  })
 })
