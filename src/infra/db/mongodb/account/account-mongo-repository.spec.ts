@@ -98,4 +98,36 @@ describe('account mongo repository', () => {
     const account = await sut.loadByToken('any_token')
     expect(account).toBeFalsy()
   })
+
+  test('should update the account data on update success', async () => {
+    const sut = makeSut()
+    const res = await accountCollection.insertOne({
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+
+    const updateResponse = await sut.update({ name: 'other_name' }, res.insertedId.toString())
+
+    const account = await accountCollection.findOne({ _id: res.insertedId })
+
+    expect(account).toBeTruthy()
+    expect(account.name).toEqual('other_name')
+    expect(updateResponse).toBe(true)
+  })
+
+  test('should not update the account data on void update', async () => {
+    const sut = makeSut()
+    const res = await accountCollection.insertOne({
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+
+    const updateResponse = await sut.update({}, res.insertedId.toString())
+    const account = await accountCollection.findOne({ _id: res.insertedId })
+
+    expect(account).toBeTruthy()
+    expect(updateResponse).toBe(false)
+  })
 })
