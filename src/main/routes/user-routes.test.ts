@@ -68,4 +68,49 @@ describe('user Routes', () => {
       expect(response.status).toBe(304)
     })
   })
+
+  describe('delete user', () => {
+    test('Should return status 200 on delete user', async () => {
+      const token = await request(app).post('/api/user')
+        .send({
+          name: 'yan',
+          password: 'some_password',
+          passwordConfirm: 'some_password',
+          email: 'some_email@mail.com'
+        })
+
+      const response = await request(app).delete('/api/user').send({ password: 'some_password' }).set('x-access-token', token.body.accessToken)
+      expect(response.status).toBe(200)
+    })
+
+    test('Should return status 401 on delete user but wrong pass', async () => {
+      const token = await request(app).post('/api/user')
+        .send({
+          name: 'yan',
+          password: 'some_password',
+          passwordConfirm: 'some_password',
+          email: 'some_email@mail.com'
+        })
+
+      const response = await request(app).delete('/api/user').send({ password: 'wrong_password' }).set('x-access-token', token.body.accessToken)
+      expect(response.status).toBe(401)
+    })
+
+    test('Should return status 403 on unauthenticated update user', async () => {
+      const response = await request(app).delete('/api/user').send({ password: 'any_password' }).set('x-access-token', 'any_invalid_token')
+      expect(response.status).toBe(403)
+    })
+
+    test('Should return status 400 on void update user without pass', async () => {
+      const token = await request(app).post('/api/user')
+        .send({
+          name: 'yan',
+          password: 'some_password',
+          passwordConfirm: 'some_password',
+          email: 'some_email@mail.com'
+        })
+      const response = await request(app).delete('/api/user').set('x-access-token', token.body.accessToken)
+      expect(response.status).toBe(400)
+    })
+  })
 })

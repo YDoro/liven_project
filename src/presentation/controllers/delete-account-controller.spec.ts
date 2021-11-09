@@ -55,12 +55,12 @@ describe('delete account', () => {
     expect(response.statusCode).toBe(500)
   })
 
-  test('should return 304 on deleteAccount false', async () => {
+  test('should return 401 on deleteAccount false', async () => {
     const { sut, validationStub, deleteAccountStub } = makeSUT()
     jest.spyOn(validationStub, 'validate').mockResolvedValueOnce(undefined)
     jest.spyOn(deleteAccountStub, 'delete').mockResolvedValueOnce(false)
     const response = await sut.handle({ body: { password: 'any_password', middleware: { user: { id: 'any_id', password: 'hashed_password' } } } })
 
-    expect(response.statusCode).toBe(304)
+    expect(response.statusCode).toBe(401)
   })
 })
