@@ -50,9 +50,15 @@ describe('auth middleware', () => {
   })
 
   test('should return 200 if loadAccountByToken returns account', async () => {
-    const { sut } = makeSUT()
+    const { sut } = makeSUT(false)
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse.statusCode).toBe(200)
+  })
+  test('should return 200 if loadAccountByToken returns account passing true on fullAccount', async () => {
+    const { sut } = makeSUT(true)
+    const httpResponse = await sut.handle(makeFakeRequest())
+    expect(httpResponse.statusCode).toBe(200)
+    expect(httpResponse.body.user).toBeDefined()
   })
 
   test('should call loadAccountByToken with correct accessToken', async () => {
