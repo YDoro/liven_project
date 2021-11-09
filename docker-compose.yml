@@ -13,7 +13,7 @@ services:
     image: node:16.13
     working_dir: /var/www/liven
     restart: always
-    command: bash -c "npm install -g inherits && npm install && npm run debug"
+    command: bash -c "npm install -g inherits && npm install --only=production --force && npm run debug"
     volumes: 
       - ./dist/:/var/www/liven/dist/
       - ./package.json:/var/www/liven/package.json
