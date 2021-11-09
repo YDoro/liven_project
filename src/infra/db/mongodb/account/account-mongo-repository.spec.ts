@@ -1,3 +1,4 @@
+import { ObjectID } from 'bson'
 import { Collection } from 'mongodb'
 import { MongoHelper } from '../helpers/mongo-helper'
 import { AccountMongoRepository } from './account-mongo-repository'
@@ -129,5 +130,29 @@ describe('account mongo repository', () => {
 
     expect(account).toBeTruthy()
     expect(updateResponse).toBe(false)
+  })
+
+  test('should delete account by id', async () => {
+    const sut = makeSut()
+    const res = await accountCollection.insertOne({
+      name: 'any_name',
+      email: 'any_email@mail.com',
+      password: 'any_password'
+    })
+
+    const deleted = await sut.deleteById(res.insertedId.toString())
+    const account = await accountCollection.findOne({ _id: res.insertedId })
+
+    expect(account).toBeFalsy()
+    expect(deleted).toBe(true)
+  })
+
+  test('should delete account by id', async () => {
+    const sut = makeSut()
+    const deleted = await sut.deleteById('618a8eb78fb75a72e87cf091')
+    const account = await accountCollection.findOne({ _id: new ObjectID('618a8eb78fb75a72e87cf091') })
+
+    expect(account).toBeFalsy()
+    expect(deleted).toBe(true)
   })
 })
