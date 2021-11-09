@@ -38,4 +38,17 @@ describe('db delete account', () => {
     await sut.delete('any_id', 'any_password', 'hashed_password')
     expect(compareSpy).toHaveBeenCalledWith('any_password', 'hashed_password')
   })
+  test('should call deleteAccountRepository if hasherComparer returns true', async () => {
+    const { sut, deleteAccountRepositoryStub } = makeSUT()
+    const deleteByIdSpy = jest.spyOn(deleteAccountRepositoryStub, 'deleteById')
+    await sut.delete('any_id', 'any_password', 'hashed_password')
+    expect(deleteByIdSpy).toHaveBeenCalledWith('any_id')
+  })
+  test('should not call deleteAccountRepository if hasherComparer returns false', async () => {
+    const { sut, deleteAccountRepositoryStub, hashComparerStub } = makeSUT()
+    jest.spyOn(hashComparerStub, 'compare').mockResolvedValueOnce(false)
+    const deleteByIdSpy = jest.spyOn(deleteAccountRepositoryStub, 'deleteById')
+    await sut.delete('any_id', 'any_password', 'hashed_password')
+    expect(deleteByIdSpy).not.toHaveBeenCalled()
+  })
 })
