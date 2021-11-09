@@ -8,8 +8,10 @@ export class DbDeleteAccount implements DeleteAccount {
         private readonly deleteAccountRepository:DeleteAccountRepository
   ) {}
 
-  delete (accountId: string, password:string, hashedPassword:string): Promise<boolean> {
-    this.hasherComparer.compare(password, hashedPassword)
-    return new Promise(resolve => resolve(true))
+  async delete (accountId: string, password:string, hashedPassword:string): Promise<boolean> {
+    if (await this.hasherComparer.compare(password, hashedPassword)) {
+      this.deleteAccountRepository.deleteById(accountId)
+    }
+    return false
   }
 }
