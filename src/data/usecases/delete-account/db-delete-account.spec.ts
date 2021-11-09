@@ -68,4 +68,16 @@ describe('db delete account', () => {
     const deleted = await sut.delete('any_id', 'any_password', 'hashed_password')
     expect(deleted).toBe(false)
   })
+  test('should return throw if deleteAccountRepository throws', async () => {
+    const { sut, deleteAccountRepositoryStub } = makeSUT()
+    jest.spyOn(deleteAccountRepositoryStub, 'deleteById').mockRejectedValueOnce(new Error('any_error'))
+    const promise = sut.delete('any_id', 'any_password', 'hashed_password')
+    expect(promise).rejects.toThrowError('any_error')
+  })
+  test('should return throw if hashComparer throws', async () => {
+    const { sut, hashComparerStub } = makeSUT()
+    jest.spyOn(hashComparerStub, 'compare').mockRejectedValueOnce(new Error('any_error'))
+    const promise = sut.delete('any_id', 'any_password', 'hashed_password')
+    expect(promise).rejects.toThrowError('any_error')
+  })
 })
