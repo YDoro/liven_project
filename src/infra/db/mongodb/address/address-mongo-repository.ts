@@ -7,10 +7,30 @@ import { AccountMongoRepository } from '../account/account-mongo-repository'
 import { MongoHelper } from '../helpers/mongo-helper'
 
 export class AddressMongoRepository implements AddAddressRepository, ListAddressesRepository {
-  async list (accountId: string): Promise<AddressModel[]> {
+  async list (accountId: string, query?:any): Promise<AddressModel[]> {
     const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
-    const account = await accountCollection.findOne<AccountModel>({ _id: new ObjectId(accountId) })
-    return account.addresses
+
+    if (query) {
+      const parsedQuery = {}
+      Object.keys(query).forEach((key) => {
+        parsedQuery['addresses.' + key] = query[key]
+      })
+
+      const accounts = await accountCollection.aggregate<AccountModel>()
+        .unwind('$addresses')
+        .match({ _id: new ObjectId(accountId), ...parsedQuery })
+        .project({ addresses: true })
+        .toArray()
+
+      const result:AddressModel[] = []
+      accounts.forEach((user) => {
+        result.push(user.addresses)
+      })
+      return result
+    } else {
+      const account = await accountCollection.findOne<AccountModel>({ _id: new ObjectId(accountId) })
+      return account.addresses
+    }
   }
 
   async add (address: AddressModel, userId: string): Promise<AccountModel> {

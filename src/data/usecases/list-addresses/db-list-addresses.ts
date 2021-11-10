@@ -7,8 +7,8 @@ export class DbListAddresses implements ListAddresses {
         private readonly listAddressesRepository: ListAddressesRepository
   ) {}
 
-  async list (accountId: string): Promise<AddressModel[]> {
-    const addresses = await this.listAddressesRepository.list(accountId)
+  async list (accountId: string, query?:any): Promise<AddressModel[]> {
+    const addresses = await this.listAddressesRepository.list(accountId, query)
     return addresses
   }
 }
