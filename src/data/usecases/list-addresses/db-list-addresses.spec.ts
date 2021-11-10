@@ -37,8 +37,8 @@ describe('db list addresses', () => {
   test('should call ListAddressesRepository with the right values', async () => {
     const { sut, listAddressesRepositoryStub } = makeSUT()
     const listSpy = jest.spyOn(listAddressesRepositoryStub, 'list')
-    await sut.list('any_account_id')
-    expect(listSpy).toHaveBeenCalledWith('any_account_id')
+    await sut.list('any_account_id', { name: 'home' })
+    expect(listSpy).toHaveBeenCalledWith('any_account_id', { name: 'home' })
   })
   test('should throw if ListAddressesRepository throws', async () => {
     const { sut, listAddressesRepositoryStub } = makeSUT()
