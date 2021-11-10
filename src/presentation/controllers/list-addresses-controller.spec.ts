@@ -1,12 +1,10 @@
 import { AddressModel } from '../../domain/models/address'
 import { ListAddresses } from '../../domain/usecases/list-addresses'
-import { Validation } from './protocols/validation'
 import { ListAddressesController } from './list-addresses-controller'
 import { HttpRequest } from './protocols/http'
 interface SutTypes{
     sut:ListAddressesController,
-    listAddressStub: ListAddresses,
-    validationStub: Validation
+    listAddressStub: ListAddresses
 }
 const makeFakeAddress = ():AddressModel => ({
   name: 'any_name',
@@ -28,19 +26,11 @@ const makeListAddresses = ():ListAddresses => {
   }
   return new ListAddressesStub()
 }
-const makeValidation = ():Validation => {
-  class ValidationStub implements Validation {
-    validate (input: any): Error | Promise<Error> {
-      return new Promise(resolve => resolve(new Error('any_error')))
-    }
-  }
-  return new ValidationStub()
-}
+
 const makeSUT = ():SutTypes => {
   const listAddressStub = makeListAddresses()
-  const validationStub = makeValidation()
-  const sut = new ListAddressesController(validationStub, listAddressStub)
-  return { listAddressStub, validationStub, sut }
+  const sut = new ListAddressesController(listAddressStub)
+  return { listAddressStub, sut }
 }
 
 const makeFakeRequest = ():HttpRequest => ({
@@ -57,15 +47,23 @@ const makeFakeRequest = ():HttpRequest => ({
   }
 })
 describe('list address controller', () => {
-  test('should call validation with correct values', async () => {
-    const { validationStub, sut } = makeSUT()
-    const validateSpy = jest.spyOn(validationStub, 'validate')
+  test('should call listAddress if validation succeeds ', async () => {
+    const { sut, listAddressStub } = makeSUT()
+    const listSpy = jest.spyOn(listAddressStub, 'list')
+
     await sut.handle(makeFakeRequest())
-    expect(validateSpy).toHaveBeenCalledWith({ street: 'any_street', complement: 'any_complement' })
+    expect(listSpy).toHaveBeenCalledWith('any_id', { street: 'any_street', complement: 'any_complement' })
   })
-  test('should return 400 if validation fails', async () => {
+  test('should return 200 if list address returns something', async () => {
     const { sut } = makeSUT()
     const response = await sut.handle(makeFakeRequest())
-    expect(response.statusCode).toBe(400)
+    expect(response.statusCode).toBe(200)
+    expect(response.body).toEqual([makeFakeAddress()])
+  })
+  test('should return 500 if list address throws', async () => {
+    const { sut, listAddressStub } = makeSUT()
+    jest.spyOn(listAddressStub, 'list').mockRejectedValueOnce(new Error())
+    const response = await sut.handle(makeFakeRequest())
+    expect(response.statusCode).toBe(500)
   })
 })
