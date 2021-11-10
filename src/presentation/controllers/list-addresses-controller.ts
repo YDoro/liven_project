@@ -2,11 +2,9 @@ import { ListAddresses } from '../../domain/usecases/list-addresses'
 import { badRequest, ok, serverError } from '../helpers/http/http-helper'
 import { Controller } from './protocols/controller'
 import { HttpRequest, HttpResponse } from './protocols/http'
-import { Validation } from './protocols/validation'
 
 export class ListAddressesController implements Controller {
   constructor (
-        private readonly validation:Validation,
         private readonly listAddress:ListAddresses
   ) {}
 
@@ -27,11 +25,9 @@ export class ListAddressesController implements Controller {
 
       Object.keys(searchFields).forEach(key => (searchFields[key] === undefined) && delete searchFields[key])
 
-      const hasErrors = await this.validation.validate(searchFields)
-
-      if (hasErrors) return badRequest(hasErrors)
-
-      return new Promise(resolve => resolve(ok([])))
+      const accountId = httpRequest.body.middleware.accountId
+      const result = await this.listAddress.list(accountId, searchFields)
+      return ok(result)
     } catch (e) {
       return serverError(e)
     }
