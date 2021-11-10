@@ -55,7 +55,7 @@ describe('address mongo repository', () => {
     const id = (await accountCollection.insertOne(makeFakeAccount())).insertedId.toString()
     const sut = makeSut()
     const addresses = await sut.list(id)
-    expect(addresses).toBeUndefined()
+    expect(addresses).toEqual([])
   })
 
   test('should return an account on list success', async () => {

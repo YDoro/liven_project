@@ -9,12 +9,7 @@ export class UniqueAddressNameValidation implements Validation {
 
   async validate (input: any): Promise<Error> {
     const accountId = input.middleware.accountId
-    const addresses = await this.listAddressesRepository.list(accountId)
-    if (addresses) {
-      const address = addresses.filter((address) => {
-        return address.name === input.name
-      })
-      if (address.length > 0) { return new UniqueParamError('name', input.name) }
-    }
+    const addresses = await this.listAddressesRepository.list(accountId, { name: input.name })
+    if (addresses.length > 0) { return new UniqueParamError('name', input.name) }
   }
 }
