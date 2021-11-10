@@ -11,18 +11,17 @@ export class ListAddressesController implements Controller {
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const searchFields = {
-        name: httpRequest.params.name || httpRequest.query.name || undefined,
-        street: httpRequest.params.street || httpRequest.query.street || undefined,
-        number: httpRequest.params.number || httpRequest.query.number || undefined,
-        complement: httpRequest.params.complement || httpRequest.query.complement || undefined,
-        landmark: httpRequest.params.landmark || httpRequest.query.landmark || undefined,
-        city: httpRequest.params.city || httpRequest.query.city || undefined,
-        state: httpRequest.params.state || httpRequest.query.state || undefined,
-        country: httpRequest.params.country || httpRequest.query.country || undefined,
-        neigborhood: httpRequest.params.neigborhood || httpRequest.query.neigborhood || undefined,
-        postalcode: httpRequest.params.postalcode || httpRequest.query.postalcode || undefined
+        name: httpRequest.params.name || httpRequest.query.name,
+        street: httpRequest.params.street || httpRequest.query.street,
+        number: httpRequest.params.number || httpRequest.query.number,
+        complement: httpRequest.params.complement || httpRequest.query.complement,
+        landmark: httpRequest.params.landmark || httpRequest.query.landmark,
+        city: httpRequest.params.city || httpRequest.query.city,
+        state: httpRequest.params.state || httpRequest.query.state,
+        country: httpRequest.params.country || httpRequest.query.country,
+        neigborhood: httpRequest.params.neigborhood || httpRequest.query.neigborhood,
+        postalcode: httpRequest.params.postalcode || httpRequest.query.postalcode
       }
-
       Object.keys(searchFields).forEach(key => (searchFields[key] === undefined) && delete searchFields[key])
 
       const accountId = httpRequest.body.middleware.accountId
