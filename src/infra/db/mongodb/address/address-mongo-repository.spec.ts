@@ -77,4 +77,15 @@ describe('address mongo repository', () => {
     const addresses = await sut.list(id, { name: 'any_name' })
     expect(addresses).toEqual([makeFakeAddress()])
   })
+
+  test('should delete account by id', async () => {
+    const id = (await accountCollection.insertOne(makeFakeAccount())).insertedId.toString()
+    const sut = makeSut()
+
+    await sut.add(makeFakeAddress(), id)
+
+    await sut.deleteByName(id, 'any_name')
+    const addresses = await sut.list(id)
+    expect(addresses).toEqual([])
+  })
 })
