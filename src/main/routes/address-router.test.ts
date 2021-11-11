@@ -95,4 +95,61 @@ describe('address Routes', () => {
       expect(response.body.length).toBe(2)
     })
   })
+
+  describe('delete /address/', () => {
+    test('Should return status 200 delete addresses', async () => {
+      // register
+      const token = await makeAccount()
+
+      await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
+
+      const response = await request(app).delete('/api/address').send({ name: 'any_name' }).set('x-access-token', token.body.accessToken)
+
+      expect(response.statusCode).toBe(200)
+    })
+
+    test('Should return status 400 delete addresses', async () => {
+      // register
+      const token = await makeAccount()
+
+      const response = await request(app).delete('/api/address').send({ otherField: 'any_name' }).set('x-access-token', token.body.accessToken)
+
+      expect(response.statusCode).toBe(400)
+    })
+
+    test('Should return status 304 delete addresses', async () => {
+      // register
+      const token = await makeAccount()
+
+      const response = await request(app).delete('/api/address').send({ name: 'any_name' }).set('x-access-token', token.body.accessToken)
+
+      expect(response.statusCode).toBe(304)
+    })
+
+    // test('Should return only one address', async () => {
+    //   // register
+    //   const token = await makeAccount()
+    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
+    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send({ ...makeFakeAddress(), name: 'other_name' })
+
+    //   const response = await request(app).get('/api/address?name=other_name').set('x-access-token', token.body.accessToken)
+
+    //   expect(response.statusCode).toBe(200)
+    //   expect(response.body).toBeInstanceOf(Array)
+    //   expect(response.body.length).toBe(1)
+    // })
+    // test('Should return only two address', async () => {
+    //   // register
+    //   const token = await makeAccount()
+
+    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
+    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send({ ...makeFakeAddress(), name: 'other_name' })
+
+    //   const response = await request(app).get('/api/address/postalcode/' + (makeFakeAddress().postalcode)).set('x-access-token', token.body.accessToken)
+
+    //   expect(response.statusCode).toBe(200)
+    //   expect(response.body).toBeInstanceOf(Array)
+    //   expect(response.body.length).toBe(2)
+    // })
+  })
 })

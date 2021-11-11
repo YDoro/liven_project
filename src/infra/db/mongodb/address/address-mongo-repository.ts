@@ -1,4 +1,4 @@
-import { MongoTransactionError, PushOperator, ObjectId, PullAllOperator } from 'mongodb'
+import { MongoTransactionError, PushOperator, ObjectId } from 'mongodb'
 import { AddAddressRepository } from '../../../../data/protocols/db/address/add-address-repository'
 import { DeleteAddressRepository } from '../../../../data/protocols/db/address/delete-address-repository'
 import { ListAddressesRepository } from '../../../../data/protocols/db/address/list-addresses-repository'
