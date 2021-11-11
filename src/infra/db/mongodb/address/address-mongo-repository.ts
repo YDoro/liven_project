@@ -1,12 +1,13 @@
-import { MongoTransactionError, PushOperator, ObjectId } from 'mongodb'
+import { MongoTransactionError, PushOperator, ObjectId, PullAllOperator } from 'mongodb'
 import { AddAddressRepository } from '../../../../data/protocols/db/address/add-address-repository'
+import { DeleteAddressRepository } from '../../../../data/protocols/db/address/delete-address-repository'
 import { ListAddressesRepository } from '../../../../data/protocols/db/address/list-addresses-repository'
 import { AccountModel } from '../../../../domain/models/account'
 import { AddressModel } from '../../../../domain/models/address'
 import { AccountMongoRepository } from '../account/account-mongo-repository'
 import { MongoHelper } from '../helpers/mongo-helper'
 
-export class AddressMongoRepository implements AddAddressRepository, ListAddressesRepository {
+export class AddressMongoRepository implements AddAddressRepository, ListAddressesRepository, DeleteAddressRepository {
   async list (accountId: string, query?:any): Promise<AddressModel[]> {
     const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
 
@@ -43,5 +44,20 @@ export class AddressMongoRepository implements AddAddressRepository, ListAddress
     }
 
     return MongoHelper.map(result.value)
+  }
+
+  async deleteByName (accountId: string, addressName: string): Promise<boolean> {
+    const accountCollection = await MongoHelper.getCollection<AccountModel>(AccountMongoRepository.accountCollection)
+    const accounts = await accountCollection.findOneAndUpdate(
+      {
+        _id: new ObjectId(accountId)
+      }, {
+        $pull: {
+          addresses: { name: addressName }
+
+        }
+      })
+    if (accounts.ok === 1) return true
+    return false
   }
 }
