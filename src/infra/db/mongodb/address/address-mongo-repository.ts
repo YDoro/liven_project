@@ -2,12 +2,13 @@ import { MongoTransactionError, PushOperator, ObjectId } from 'mongodb'
 import { AddAddressRepository } from '../../../../data/protocols/db/address/add-address-repository'
 import { DeleteAddressRepository } from '../../../../data/protocols/db/address/delete-address-repository'
 import { ListAddressesRepository } from '../../../../data/protocols/db/address/list-addresses-repository'
+import { UpdateAddressRepository } from '../../../../data/protocols/db/address/update-address-repositoy'
 import { AccountModel } from '../../../../domain/models/account'
 import { AddressModel } from '../../../../domain/models/address'
 import { AccountMongoRepository } from '../account/account-mongo-repository'
 import { MongoHelper } from '../helpers/mongo-helper'
 
-export class AddressMongoRepository implements AddAddressRepository, ListAddressesRepository, DeleteAddressRepository {
+export class AddressMongoRepository implements AddAddressRepository, ListAddressesRepository, DeleteAddressRepository, UpdateAddressRepository {
   async list (accountId: string, query?:any): Promise<AddressModel[]> {
     const accountCollection = await MongoHelper.getCollection(AccountMongoRepository.accountCollection)
 
@@ -59,5 +60,25 @@ export class AddressMongoRepository implements AddAddressRepository, ListAddress
       })
     if (accounts.modifiedCount > 0) return true
     return false
+  }
+
+  async updateByName (accountId: string, addressName: string, update: any): Promise<AddressModel> {
+    const accountCollection = await MongoHelper.getCollection<AccountModel>(AccountMongoRepository.accountCollection)
+    let searchName = addressName
+    const parsedQuery = {}
+    Object.keys(update).forEach((key) => {
+      parsedQuery['addresses.$.' + key] = update[key]
+    })
+
+    if (update.name) {
+      searchName = update.name
+    }
+    await accountCollection.updateOne({
+      _id: new ObjectId(accountId),
+      'addresses.name': addressName
+    }, {
+      $set: parsedQuery
+    })
+    return (await this.list(accountId, { name: searchName }))[0]
   }
 }
