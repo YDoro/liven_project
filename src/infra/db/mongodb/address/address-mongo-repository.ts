@@ -48,7 +48,7 @@ export class AddressMongoRepository implements AddAddressRepository, ListAddress
 
   async deleteByName (accountId: string, addressName: string): Promise<boolean> {
     const accountCollection = await MongoHelper.getCollection<AccountModel>(AccountMongoRepository.accountCollection)
-    const accounts = await accountCollection.findOneAndUpdate(
+    const accounts = await accountCollection.updateMany(
       {
         _id: new ObjectId(accountId)
       }, {
@@ -57,7 +57,7 @@ export class AddressMongoRepository implements AddAddressRepository, ListAddress
 
         }
       })
-    if (accounts.ok === 1) return true
+    if (accounts.modifiedCount > 0) return true
     return false
   }
 }
