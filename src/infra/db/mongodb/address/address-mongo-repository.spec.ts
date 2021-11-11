@@ -78,7 +78,7 @@ describe('address mongo repository', () => {
     expect(addresses).toEqual([makeFakeAddress()])
   })
 
-  test('should delete account by id', async () => {
+  test('should delete address by name', async () => {
     const id = (await accountCollection.insertOne(makeFakeAccount())).insertedId.toString()
     const sut = makeSut()
 
@@ -87,5 +87,17 @@ describe('address mongo repository', () => {
     await sut.deleteByName(id, 'any_name')
     const addresses = await sut.list(id)
     expect(addresses).toEqual([])
+  })
+
+  test('should return an account on updateByname success with query', async () => {
+    const id = (await accountCollection.insertOne(makeFakeAccount())).insertedId.toString()
+    const sut = makeSut()
+    const anotherAddress = makeFakeAddress()
+    anotherAddress.name = 'other_name'
+    await sut.add(makeFakeAddress(), id)
+    await sut.add(anotherAddress, id)
+
+    const address = await sut.updateByName(id, 'any_name', { name: 'other_name' })
+    expect(address.name).toEqual('other_name')
   })
 })
