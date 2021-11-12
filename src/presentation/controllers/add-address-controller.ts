@@ -31,6 +31,7 @@ export class AddAddressController implements Controller {
         state,
         country
       }, accountId)
+      delete account.password
       return created(account)
     } catch (e) {
       return serverError(e)
