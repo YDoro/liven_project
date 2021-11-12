@@ -8,7 +8,7 @@ export class OptionalFieldValidationComposite implements Validation {
 
   async validate (input: any): Promise<Error> {
     for (const validationMap of this.validations) {
-      if (input[validationMap.field]) {
+      if (input[validationMap.field] !== undefined) {
         const error = validationMap.validation.validate(input)
         if (error) {
           if (error instanceof Promise) {
