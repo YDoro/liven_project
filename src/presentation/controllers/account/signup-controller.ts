@@ -1,11 +1,11 @@
 /* eslint-disable no-useless-constructor */
-import { AddAccount } from '../../domain/usecases/add-account'
-import { Authentication } from '../../domain/usecases/authentication'
-import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
-import { badRequest, created, forbidden, serverError } from '../helpers/http/http-helper'
-import { Controller } from './protocols/controller'
-import { HttpRequest, HttpResponse } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { AddAccount } from '../../../domain/usecases/add-account'
+import { Authentication } from '../../../domain/usecases/authentication'
+import { EmailAlreadyInUseError } from '../../errors/email-already-in-use-error'
+import { badRequest, created, forbidden, serverError } from '../../helpers/http/http-helper'
+import { Controller } from '../protocols/controller'
+import { HttpRequest, HttpResponse } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 
 export class SignUpController implements Controller {
   constructor (

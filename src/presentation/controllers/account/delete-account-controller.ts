@@ -1,8 +1,8 @@
-import { DeleteAccount } from '../../domain/usecases/delete-account'
-import { badRequest, ok, serverError, unauthorized } from '../helpers/http/http-helper'
-import { Controller } from './protocols/controller'
-import { HttpRequest, HttpResponse } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { DeleteAccount } from '../../../domain/usecases/delete-account'
+import { badRequest, ok, serverError, unauthorized } from '../../helpers/http/http-helper'
+import { Controller } from '../protocols/controller'
+import { HttpRequest, HttpResponse } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 
 export class DeleteAccountController implements Controller {
   constructor (

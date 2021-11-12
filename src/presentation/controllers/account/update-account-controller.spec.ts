@@ -1,6 +1,6 @@
-import { UpdateAccount, UpdateAccountModel } from '../../domain/usecases/update-account'
-import { HttpRequest } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { UpdateAccount, UpdateAccountModel } from '../../../domain/usecases/update-account'
+import { HttpRequest } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 import { UpdateAccountController } from './update-account-controller'
 
 interface SutTypes{

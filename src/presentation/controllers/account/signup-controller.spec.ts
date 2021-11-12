@@ -1,10 +1,10 @@
-import { AccountModel } from '../../domain/models/account'
-import { AddAccount, AddAccountModel } from '../../domain/usecases/add-account'
-import { Authentication, AuthenticationModel } from '../../domain/usecases/authentication'
-import { EmailAlreadyInUseError } from '../errors/email-already-in-use-error'
-import { forbidden, serverError } from '../helpers/http/http-helper'
-import { HttpRequest } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { AccountModel } from '../../../domain/models/account'
+import { AddAccount, AddAccountModel } from '../../../domain/usecases/add-account'
+import { Authentication, AuthenticationModel } from '../../../domain/usecases/authentication'
+import { EmailAlreadyInUseError } from '../../errors/email-already-in-use-error'
+import { forbidden, serverError } from '../../helpers/http/http-helper'
+import { HttpRequest } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 import { SignUpController } from './signup-controller'
 
 interface SutTypes {

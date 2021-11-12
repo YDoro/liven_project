@@ -1,5 +1,5 @@
-import { DeleteAccount } from '../../domain/usecases/delete-account'
-import { Validation } from './protocols/validation'
+import { DeleteAccount } from '../../../domain/usecases/delete-account'
+import { Validation } from '../protocols/validation'
 import { DeleteAccountController } from './delete-account-controller'
 
 interface SutTypes{

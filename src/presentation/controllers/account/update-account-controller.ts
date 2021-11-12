@@ -1,8 +1,8 @@
-import { UpdateAccount } from '../../domain/usecases/update-account'
-import { badRequest, notModified, ok, serverError } from '../helpers/http/http-helper'
-import { Controller } from './protocols/controller'
-import { HttpRequest, HttpResponse } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { UpdateAccount } from '../../../domain/usecases/update-account'
+import { badRequest, notModified, ok, serverError } from '../../helpers/http/http-helper'
+import { Controller } from '../protocols/controller'
+import { HttpRequest, HttpResponse } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 
 export class UpdateAccountController implements Controller {
   constructor (
