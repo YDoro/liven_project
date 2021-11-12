@@ -9,7 +9,7 @@ export const makeAddAddressValidation = (): ValidationComposite => {
   for (const field of ['name', 'postalcode', 'street', 'number', 'neigborhood', 'city', 'state', 'country']) {
     validations.push(new RequiredFieldValidation(field))
   }
-  const uniqueName = new UniqueAddressNameValidation(makeDbListAddresses())
+  const uniqueName = new UniqueAddressNameValidation(makeDbListAddresses(), 'name')
 
   validations.push(uniqueName)
 

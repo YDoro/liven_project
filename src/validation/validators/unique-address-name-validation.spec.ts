@@ -36,7 +36,7 @@ const makeListAddressRepository = ():ListAddressesRepository => {
 }
 const makeSUT = ():SutTypes => {
   const listAddressesRepositoryStub = makeListAddressRepository()
-  const sut = new UniqueAddressNameValidation(listAddressesRepositoryStub)
+  const sut = new UniqueAddressNameValidation(listAddressesRepositoryStub, 'name')
   return { listAddressesRepositoryStub, sut }
 }
 describe('unique address name validation ', () => {
