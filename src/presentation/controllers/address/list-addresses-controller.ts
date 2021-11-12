@@ -1,7 +1,7 @@
-import { ListAddresses } from '../../domain/usecases/list-addresses'
-import { ok, serverError } from '../helpers/http/http-helper'
-import { Controller } from './protocols/controller'
-import { HttpRequest, HttpResponse } from './protocols/http'
+import { ListAddresses } from '../../../domain/usecases/list-addresses'
+import { ok, serverError } from '../../helpers/http/http-helper'
+import { Controller } from '../protocols/controller'
+import { HttpRequest, HttpResponse } from '../protocols/http'
 
 export class ListAddressesController implements Controller {
   constructor (

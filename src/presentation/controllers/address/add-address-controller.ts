@@ -1,8 +1,8 @@
-import { AddAddress } from '../../domain/usecases/add-address'
-import { badRequest, created, serverError } from '../helpers/http/http-helper'
-import { Controller } from './protocols/controller'
-import { HttpRequest, HttpResponse } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { AddAddress } from '../../../domain/usecases/add-address'
+import { badRequest, created, serverError } from '../../helpers/http/http-helper'
+import { Controller } from '../protocols/controller'
+import { HttpRequest, HttpResponse } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 
 export class AddAddressController implements Controller {
   constructor (

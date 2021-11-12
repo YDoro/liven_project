@@ -1,4 +1,4 @@
-import { DeleteAddressController } from '../../../../presentation/controllers/delete-address-controller'
+import { DeleteAddressController } from '../../../../presentation/controllers/address/delete-address-controller'
 import { Controller } from '../../../../presentation/controllers/protocols/controller'
 import { RequiredFieldValidation } from '../../../../validation/validators/required-field-validation'
 import { makeDbDleteAddress } from '../../usecases/delete-address/db-delete-address-factory'

@@ -1,7 +1,7 @@
-import { DeleteAddress } from '../../domain/usecases/delete-address'
+import { DeleteAddress } from '../../../domain/usecases/delete-address'
 import { DeleteAddressController } from './delete-address-controller'
-import { HttpRequest } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { HttpRequest } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 
 const makeDeleteAddress = ():DeleteAddress => {
   class DeleteAddressStub implements DeleteAddress {

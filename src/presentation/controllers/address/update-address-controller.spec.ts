@@ -1,8 +1,8 @@
-import { AddressModel } from '../../domain/models/address'
+import { AddressModel } from '../../../domain/models/address'
 import { UpdateAddressController } from './update-address-controller'
-import { HttpRequest } from './protocols/http'
-import { Validation } from './protocols/validation'
-import { UpdateAddress, UpdateAddressModel } from '../../domain/usecases/update-address'
+import { HttpRequest } from '../protocols/http'
+import { Validation } from '../protocols/validation'
+import { UpdateAddress, UpdateAddressModel } from '../../../domain/usecases/update-address'
 
 const makeValidation = ():Validation => {
   class ValidationStub implements Validation {

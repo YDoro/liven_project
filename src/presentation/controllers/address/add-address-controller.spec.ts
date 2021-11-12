@@ -1,9 +1,9 @@
-import { AccountModel } from '../../domain/models/account'
-import { AddressModel } from '../../domain/models/address'
-import { AddAddress } from '../../domain/usecases/add-address'
+import { AccountModel } from '../../../domain/models/account'
+import { AddressModel } from '../../../domain/models/address'
+import { AddAddress } from '../../../domain/usecases/add-address'
 import { AddAddressController } from './add-address-controller'
-import { HttpRequest } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { HttpRequest } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 
 interface SutTypes{
     addAddressStub: AddAddress,

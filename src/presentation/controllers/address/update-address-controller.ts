@@ -1,9 +1,9 @@
-import { UpdateAddress } from '../../domain/usecases/update-address'
-import { badRequest, ok, serverError } from '../helpers/http/http-helper'
-import { flattenObject } from '../helpers/object/flatten-object'
-import { Controller } from './protocols/controller'
-import { HttpRequest, HttpResponse } from './protocols/http'
-import { Validation } from './protocols/validation'
+import { UpdateAddress } from '../../../domain/usecases/update-address'
+import { badRequest, ok, serverError } from '../../helpers/http/http-helper'
+import { flattenObject } from '../../helpers/object/flatten-object'
+import { Controller } from '../protocols/controller'
+import { HttpRequest, HttpResponse } from '../protocols/http'
+import { Validation } from '../protocols/validation'
 
 export class UpdateAddressController implements Controller {
   constructor (

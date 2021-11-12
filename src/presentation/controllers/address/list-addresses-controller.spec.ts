@@ -1,7 +1,7 @@
-import { AddressModel } from '../../domain/models/address'
-import { ListAddresses } from '../../domain/usecases/list-addresses'
+import { AddressModel } from '../../../domain/models/address'
+import { ListAddresses } from '../../../domain/usecases/list-addresses'
 import { ListAddressesController } from './list-addresses-controller'
-import { HttpRequest } from './protocols/http'
+import { HttpRequest } from '../protocols/http'
 interface SutTypes{
     sut:ListAddressesController,
     listAddressStub: ListAddresses
