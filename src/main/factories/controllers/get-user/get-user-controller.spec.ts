@@ -16,6 +16,7 @@ describe('get user controller', () => {
     })
 
     expect(response.statusCode).toBe(200)
+    expect(response.body.password).not.toBeDefined()
   })
   test('should return 401 on user not provided', async () => {
     const sut = new GetUserController()
