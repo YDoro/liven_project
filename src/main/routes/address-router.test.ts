@@ -57,7 +57,7 @@ describe('address Routes', () => {
       expect(response.statusCode).toBe(400)
     })
   })
-  describe('get /address/', () => {
+  describe('GET /address/', () => {
     test('Should return status 200 on list all addresses', async () => {
       // register
       const token = await makeAccount()
@@ -96,7 +96,7 @@ describe('address Routes', () => {
     })
   })
 
-  describe('delete /address/', () => {
+  describe('DELETE /address/', () => {
     test('Should return status 200 delete addresses', async () => {
       // register
       const token = await makeAccount()
@@ -127,7 +127,7 @@ describe('address Routes', () => {
     })
   })
 
-  describe('update /address/', () => {
+  describe('PATCH /address/', () => {
     test('Should return status 200 update addresses', async () => {
       // register
       const token = await makeAccount()
@@ -146,6 +146,48 @@ describe('address Routes', () => {
       const response = await request(app).patch('/api/address').send({ update: { name: 'other_name' } }).set('x-access-token', token.body.accessToken)
 
       expect(response.statusCode).toBe(400)
+    })
+
+    test('Should return status 400 update addresses with name already found in database', async () => {
+      // register
+      const token = await makeAccount()
+      // add address
+      await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
+
+      const response = await request(app).patch('/api/address').send({ name: 'any_name', update: { name: 'any_name' } }).set('x-access-token', token.body.accessToken)
+
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toEqual({
+        error: 'Unique param Error: name , any_name'
+      })
+    })
+
+    test('Should return status 400 update addresses with invalid param format', async () => {
+      // register
+      const token = await makeAccount()
+      // add address
+      await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
+
+      const response = await request(app).patch('/api/address').send({ name: 'any_name', update: { postalcode: 'wrong_postal_code' } }).set('x-access-token', token.body.accessToken)
+
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toEqual({
+        error: 'Invalid param: update.postalcode'
+      })
+    })
+
+    test('Should return status 400 update addresses with required field empty', async () => {
+      // register
+      const token = await makeAccount()
+      // add address
+      await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
+
+      const response = await request(app).patch('/api/address').send({ name: 'any_name', update: { name: '' } }).set('x-access-token', token.body.accessToken)
+
+      expect(response.statusCode).toBe(400)
+      expect(response.body).toEqual({
+        error: 'Missing param: update.name'
+      })
     })
   })
 })
