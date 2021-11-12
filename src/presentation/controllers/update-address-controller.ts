@@ -1,5 +1,6 @@
 import { UpdateAddress } from '../../domain/usecases/update-address'
 import { badRequest, ok, serverError } from '../helpers/http/http-helper'
+import { flattenObject } from '../helpers/object/flatten-object'
 import { Controller } from './protocols/controller'
 import { HttpRequest, HttpResponse } from './protocols/http'
 import { Validation } from './protocols/validation'
@@ -12,7 +13,7 @@ export class UpdateAddressController implements Controller {
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
-      const error = await this.validation.validate(httpRequest.body)
+      const error = await this.validation.validate(flattenObject(httpRequest.body))
       if (error) {
         return badRequest(error)
       }
