@@ -66,6 +66,7 @@ describe('add address controller', () => {
     expect(response.statusCode).toBe(201)
     expect(response.body.addresses).toBeInstanceOf(Array)
     expect(response.body.addresses[0]).toBeDefined()
+    expect(response.body.password).not.toBeDefined()
   })
   test('should call addAddressAdd with the right values', async () => {
     const { sut, addAddressStub } = makeSUT()
