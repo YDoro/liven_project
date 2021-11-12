@@ -125,31 +125,27 @@ describe('address Routes', () => {
 
       expect(response.statusCode).toBe(304)
     })
+  })
 
-    // test('Should return only one address', async () => {
-    //   // register
-    //   const token = await makeAccount()
-    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
-    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send({ ...makeFakeAddress(), name: 'other_name' })
+  describe('update /address/', () => {
+    test('Should return status 200 update addresses', async () => {
+      // register
+      const token = await makeAccount()
 
-    //   const response = await request(app).get('/api/address?name=other_name').set('x-access-token', token.body.accessToken)
+      await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
 
-    //   expect(response.statusCode).toBe(200)
-    //   expect(response.body).toBeInstanceOf(Array)
-    //   expect(response.body.length).toBe(1)
-    // })
-    // test('Should return only two address', async () => {
-    //   // register
-    //   const token = await makeAccount()
+      const response = await request(app).patch('/api/address').send({ name: 'any_name', update: { name: 'other_name' } }).set('x-access-token', token.body.accessToken)
 
-    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send(makeFakeAddress())
-    //   await request(app).post('/api/address').set('x-access-token', token.body.accessToken).send({ ...makeFakeAddress(), name: 'other_name' })
+      expect(response.statusCode).toBe(200)
+    })
 
-    //   const response = await request(app).get('/api/address/postalcode/' + (makeFakeAddress().postalcode)).set('x-access-token', token.body.accessToken)
+    test('Should return status 400 update addresses', async () => {
+      // register
+      const token = await makeAccount()
 
-    //   expect(response.statusCode).toBe(200)
-    //   expect(response.body).toBeInstanceOf(Array)
-    //   expect(response.body.length).toBe(2)
-    // })
+      const response = await request(app).patch('/api/address').send({ update: { name: 'other_name' } }).set('x-access-token', token.body.accessToken)
+
+      expect(response.statusCode).toBe(400)
+    })
   })
 })
