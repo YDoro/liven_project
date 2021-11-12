@@ -1,6 +1,6 @@
 import { Validation } from '../../../../presentation/controllers/protocols/validation'
 import { EmailValidation } from '../../../../validation/validators/email-validation'
-import { MapFieldValidation, OptionalFieldValidationComposite } from '../../../../validation/validators/optional-field-composite-validation'
+import { MapFieldValidation, OptionalFieldValidationComposite } from '../../../../validation/validators/composites/optional-field-composite-validation'
 
 export const makeUpdateAccountValidation = (): Validation => {
   const validations: MapFieldValidation[] = []

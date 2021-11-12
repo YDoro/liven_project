@@ -2,7 +2,7 @@ import { Validation } from '../../../../presentation/controllers/protocols/valid
 import { CompareFieldsValidaiton } from '../../../../validation/validators/compare-fields-validation'
 import { EmailValidation } from '../../../../validation/validators/email-validation'
 import { RequiredFieldValidation } from '../../../../validation/validators/required-field-validation'
-import { ValidationComposite } from '../../../../validation/validators/validation-composite'
+import { ValidationComposite } from '../../../../validation/validators/composites/validation-composite'
 
 export const makeSignUpValidation = (): ValidationComposite => {
   const validations: Validation[] = []

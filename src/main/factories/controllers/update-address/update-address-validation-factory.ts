@@ -1,9 +1,9 @@
 import { Validation } from '../../../../presentation/controllers/protocols/validation'
 import { NumericFieldValidation } from '../../../../validation/validators/numeric-field-validation'
-import { MapFieldValidation, OptionalFieldValidationComposite } from '../../../../validation/validators/optional-field-composite-validation'
+import { MapFieldValidation, OptionalFieldValidationComposite } from '../../../../validation/validators/composites/optional-field-composite-validation'
 import { RequiredFieldValidation } from '../../../../validation/validators/required-field-validation'
 import { UniqueAddressNameValidation } from '../../../../validation/validators/unique-address-name-validation'
-import { ValidationComposite } from '../../../../validation/validators/validation-composite'
+import { ValidationComposite } from '../../../../validation/validators/composites/validation-composite'
 import { makeDbListAddresses } from '../../usecases/list-addresses/db-list-addresses-factory'
 
 export const makeUpdateAddressValidation = ():Validation => {

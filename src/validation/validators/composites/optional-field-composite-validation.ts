@@ -1,4 +1,4 @@
-import { Validation } from '../../presentation/controllers/protocols/validation'
+import { Validation } from '../../../presentation/controllers/protocols/validation'
 export interface MapFieldValidation{
     field:string,
     validation:Validation
