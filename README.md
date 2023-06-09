@@ -2,7 +2,7 @@
 # Liven Project
 
 This project was made using Typescript and MongoDb with Test Driven Development, and Clean Architecture.
-It was a challenge from [Liven](https://liven.tech/pt) to enjoy their development team.
+It was a challenge from [Liven](https://liven.tech/pt) to join their development team.
 
 For more details see the [documentation](https://studio-ws.apicur.io/sharing/88289fe3-5afa-445a-9694-a120fcdd48af).
 
